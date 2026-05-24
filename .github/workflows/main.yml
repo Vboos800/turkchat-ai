@@ -1,0 +1,20 @@
+name: Turkchat APK Build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get Date
+        id: get-date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+      - name: Cache Buildozer
+        uses: actions/cache@v4
+        with:
+          path: .buildozer
+          key: buildozer-${{ runner.os }}-${{ env.date }}
+      - name: Build with Buildozer
+        uses: ArtemGovorov/buildozer-action@v1
+        with:
+          workdir: .
+          buildozer_version: stable
